@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+pydantic
+transformers
+torch
+datasets
+accelerate
+peft
+pytest
+httpx
+python-multipart

@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+.env
+.venv/
+venv/
+
+# VSCode
+.vscode/
+
+# Models and data (large files)
+models/summarizer/*
+!models/summarizer/.gitkeep
+
+data/*
+!data/raw/
+!data/raw/.gitkeep
+
+# Jupyter
+.ipynb_checkpoints/
