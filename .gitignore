@@ -22,3 +22,10 @@ data/*
 #Macfiles
 .DS_Store
 **/.DS_Store
+
+models/summarizer/
+models/*
+
+# Python caches
+__pycache__/
+*.pyc
