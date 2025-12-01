@@ -1,14 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>Text Summarization</title>
+    <title>Text Summarization App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #2563eb;
+        }
+
+        p {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #555;
+        }
+
+        textarea {
+            width: 100%;
+            height: 180px;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            outline: none;
+            resize: vertical;
+            transition: 0.2s;
+        }
+
+        textarea:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 5px rgba(37,99,235,0.4);
+        }
+
+        .hint-box {
+            background: #eef2ff;
+            border-left: 4px solid #6366f1;
+            padding: 12px;
+            margin-top: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+
+        button {
+            padding: 14px 24px;
+            font-size: 17px;
+            background-color: #2563eb;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background-color: #1d4ed8;
+        }
+
+        #output {
+            margin-top: 35px;
+            padding: 25px;
+            border-radius: 10px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            display: none;
+        }
+
+        .label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #111827;
+        }
+
+        #summaryText {
+            background: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #2563eb;
+        }
+
+        #stats {
+            font-size: 14px;
+            margin-top: 15px;
+            background: #f3f4f6;
+            padding: 12px;
+            border-radius: 6px;
+        }
+    </style>
 </head>
-
 <body>
-    <h1>Text Summarization UI (Coming Soon)</h1>
-    <p>This page will contain a textarea to submit text for summarization.</p>
-</body>
 
+<div class="container">
+    <h1>Text Summarization App</h1>
+    <p>Paste any conversation or text below and generate a concise summary instantly.</p>
+
+    <textarea id="inputText" placeholder="Enter your text here..."></textarea>
+
+    <div class="hint-box">
+<b>Sample conversation:</b>
+John: Did you finish the project report?
+Sarah: Not yet, I need a few more hours.
+John: The deadline is tonight.
+Sarah: I know, I'll send it before 6 PM.
+John: Okay, tell me if you need help.
+Sarah: Thanks, I will.
+    </div>
+
+    <button onclick="summarize()">Summarize</button>
+
+    <div id="output">
+        <div class="label">Summary:</div>
+        <div id="summaryText"></div>
+
+        <div class="label" style="margin-top:20px;">Stats:</div>
+        <div id="stats"></div>
+    </div>
+</div>
+
+<script>
+async function summarize() {
+    const text = document.getElementById("inputText").value;
+    
+    if (!text.trim()) {
+        alert("Please enter some text to summarize.");
+        return;
+    }
+
+    const response = await fetch("/summarize", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({text})
+    });
+
+    const result = await response.json();
+
+    document.getElementById("summaryText").innerText = result.summary;
+
+    document.getElementById("stats").innerText =
+        `Compression Ratio: ${result.compression_ratio.toFixed(2)}\n` +
+        `Original Length: ${result.original_length}\n` +
+        `Summary Length: ${result.summary_length}\n` +
+        `Tokenization: ${result.tokenization_time} ms\n` +
+        `Generation: ${result.generation_time} ms\n` +
+        `Total: ${result.total_time} ms`;
+
+    document.getElementById("output").style.display = "block";
+}
+</script>
+
+</body>
 </html>
