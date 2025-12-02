@@ -208,17 +208,6 @@ This opens a local UI for testing summaries interactively.
 
 ---
 
-## 📌 Notes for Recruiters
-
-- Model trained from scratch (LoRA)  
-- Pipeline fully production-ready  
-- Two deployment modes: **FastAPI/Docker** & **Gradio/HF Space**  
-- Clean architecture, modular components  
-- Real-world conversation summarization  
-- Demonstrates ML engineering + MLOps + deployment skills  
-
----
-
 ## 📜 License
 
 MIT — free to use for any purpose.
