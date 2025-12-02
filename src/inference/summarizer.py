@@ -1,3 +1,4 @@
+from pydoc import text
 import time
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torch
@@ -68,11 +69,26 @@ class Summarizer:
 
         logger.info(f"Input length: {len(text)} characters")
 
+        prompt = (
+            "Summarize the conversation below.\n"
+            "Your summary MUST follow these rules:\n"
+            "- Do NOT add information that was not explicitly stated.\n"
+            "- Do NOT infer intentions or future events.\n"
+            "- ONLY describe facts mentioned in the dialogue.\n"
+            "- Keep speakers' roles accurate.\n"
+            "- Focus on the main points and outcomes.\n\n"
+            "Conversation:\n"
+            f"{text}\n\n"
+            "Summary:"
+        )
+
+
+
         # Tokenization
         logger.info("Tokenizing input...")
         t0 = time.time()
         inputs = self.tokenizer(
-            text,
+            prompt,
             return_tensors="pt",
             truncation=True,
             max_length=1024,
@@ -91,6 +107,7 @@ class Summarizer:
             repetition_penalty=2.0,
             length_penalty=0.8,
             early_stopping=True,
+            do_sample=False, 
         )
         t2 = time.time()
         logger.info(f"Generation complete in {(t2 - t1) * 1000:.2f} ms")
